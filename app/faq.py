@@ -6,6 +6,7 @@ from chromadb.utils import embedding_functions                                  
 from groq import Groq                                                                                              # Chat LLM clinet for generating answers.
 import pandas as pd                                                                                                # Reading FAQ data from csv file. 
 from dotenv import load_dotenv                                                                                     # Loads .env file to access secrets locally.
+import streamlit as st
 
 # 🔐 2. API Key & Embedding Function
 load_dotenv()                                                                                                      # Loads .env file into environment variables.
