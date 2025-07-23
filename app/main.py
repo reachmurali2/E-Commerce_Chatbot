@@ -1,3 +1,7 @@
+__import__('pysqlite3')
+import sys
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+
 # ✅ 1. Imports and Setup
 import os                                                          # Allows access to OS-level environment variables like API keys.    
 import streamlit as st                                             # Imports Streamlit for building interactive web app.
