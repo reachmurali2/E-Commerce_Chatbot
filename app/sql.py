@@ -7,10 +7,13 @@ import pandas as pd                                                            #
 from pathlib import Path                                                       # OS-independent file path handling.
 from dotenv import load_dotenv                                                 # Load .env file into Python environment.
 from pandas import DataFrame                                                   # query the SQLite database and convert result to a DataFrame.
+import streamlit as st
 
 load_dotenv()                                       
-GROQ_MODEL = os.environ['GROQ_MODEL']                                          # Safely reads the model name and API key from environment.
-api_key = os.getenv("GROQ_API_KEY")
+# GROQ_MODEL = os.environ['GROQ_MODEL']                                        # Safely reads the model name and API key from environment.
+GROQ_MODEL = st.secrets["GROQ_MODEL"]
+# api_key = os.getenv('GROQ_API_KEY')                                          # Enable while using on local machine // Loads the API key from environment variables on your local machine.            
+api_key = st.secrets["GROQ_API_KEY"]                                           # Enable while deploying in streamlit // When deployed on Streamlit Cloud, use this to securely fetch secrets from .streamlit/secrets.toml.
 
 # 📍 2. Set Path and Initialize Groq Client
 db_path = Path(__file__).parent/"db.sqlite"
@@ -63,7 +66,8 @@ def generate_sql_query(question):                                            # T
                 "content": question,
             }
         ],
-        model = os.environ["GROQ_MODEL"],
+        # model = os.environ["GROQ_MODEL"],                                    # ❌ won't work in Streamlit Cloud.  Reads the model name from environment variable (e.g., llama-3-8b), wo
+        model = st.secrets["GROQ_MODEL"],                                      # ✅ works both locally and on Streamlit Cloud
         temperature=0.2,                                                       # Temperature makes the output more deterministic.
         max_tokens=1024
     )
@@ -89,7 +93,8 @@ def data_comprehension(question, context):                                      
                 "content": f"QUESTION: {question}. DATA: {context}",
             }
         ],
-        model = os.environ["GROQ_MODEL"],
+        # model = os.environ["GROQ_MODEL"],                                    # ❌ won't work in Streamlit Cloud.  Reads the model name from environment variable (e.g., llama-3-8b), wo
+        model = st.secrets["GROQ_MODEL"],                                      # ✅ works both locally and on Streamlit Cloud
         temperature=0.2,
         max_tokens=1024
     )
