@@ -9,7 +9,9 @@ from dotenv import load_dotenv                                                  
 
 # 🔐 2. API Key & Embedding Function
 load_dotenv()                                                                                                      # Loads .env file into environment variables.
-api_key = os.getenv("GROQ_API_KEY")                                                                                # Fetches your GROQ API KEY 
+# api_key = os.getenv('GROQ_API_KEY')                                                                              # Enable while using on local machine // Loads the API key from environment variables on your local machine.            
+api_key = st.secrets["GROQ_API_KEY"]                                                                               # Enable while deploying in streamlit // When deployed on Streamlit Cloud, use this to securely fetch secrets from .streamlit/secrets.toml.
+
 ef = embedding_functions.SentenceTransformerEmbeddingFunction(model_name='sentence-transformers/all-MiniLM-L6-v2') # Sentence transformer embedding model to convert questions into vector form
 
 # 📂 3. Initialize Paths and Clients
@@ -47,7 +49,8 @@ def generate_answer(query, context):
     QUESTION : {query}
     '''
     completion = groq_client.chat.completions.create(                                                               # This allows it access to real-time information and interaction with external environments, providing more accurate, up-to-date, and capable responses than an LLM alone.
-        model = os.environ["GROQ_MODEL"],                                                                           # Reads the model name from environment variable (e.g., llama-3-8b)
+        # model = os.environ["GROQ_MODEL"],                                                                         # ❌ won't work in Streamlit Cloud.  Reads the model name from environment variable (e.g., llama-3-8b), wo
+        model = st.secrets["GROQ_MODEL"],                                                                           # ✅ works both locally and on Streamlit Cloud
         messages=[
             {
                 'role' :'user',
