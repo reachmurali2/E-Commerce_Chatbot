@@ -129,7 +129,8 @@ if __name__ == "__main__":
     question = "Show me 3 running shoes for woman"
     # question = "sfsdfsddsfsf"
     answer = sql_chain(question)                                              # Runs the complete pipeline
-    print(answer)                                                             # Displays final summarized result
+    st.write(answer)                                                          # Displays final summarized result
+    # print(answer)                                                           # Displays final summarized result in local machine
 
 
 
