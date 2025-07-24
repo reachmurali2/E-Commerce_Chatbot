@@ -50,7 +50,8 @@ if query:
         st.markdown(query)                                                       
     st.session_state.messages.append({'role':'user', 'content':query})  
  
-    response = ask(query)                                                         # Call the routing function to get the right response.
+    # response = ask(query)                                                         # Call the routing function to get the right response.
+    response = sql_chain(query)
     with st.chat_message("assistant"):                                            # Show the bot's response in chat.
         st.markdown(response)
     st.session_state.messages.append({'role':'assistant', 'content':response})    # Update the chat history for persistence
