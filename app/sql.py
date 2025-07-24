@@ -128,9 +128,10 @@ if __name__ == "__main__":
     # question = "Show top 3 shoes in descending order of rating"               # Defines test input                                    
     question = "Show me 3 running shoes for woman"
     # question = "sfsdfsddsfsf"
-    answer = sql_chain(question)                                              # Runs the complete pipeline
-    st.write(answer)                                                          # Displays final summarized result
-    # print(answer)                                                           # Displays final summarized result in local machine
+    answer = sql_chain(question)                                               # Runs the complete pipeline
+    # st.write(answer)                                                         # Displays final summarized result in streamlit
+    st.markdown(answer)                                                        # Displays final summarized result in streamlit
+    # print(answer)                                                            # Displays final summarized result in local machine
 
 
 
