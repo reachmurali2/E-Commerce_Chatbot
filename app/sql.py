@@ -20,33 +20,27 @@ db_path = Path(__file__).parent/"db.sqlite"
 client_sql = Groq(api_key=api_key)
 
 #🧾 3. SQL Prompt Template for LLM                                             #  🧠 LLM Role => Pretends to be an expert at translating natural language to SQL , 🧱 Schema => 	Describes the structure of the SQLite database ,  🔍 Tip => Emphasizes use of %LIKE% for brand search , 🔖 Format => Always returns SQL query inside <SQL> ... </SQL> tags 
-sql_prompt = """You are an expert in SQL and understand database schemas. 
-Your task is to generate a single SQL query to answer the user’s natural language question.
-
-Refer to the database schema provided below:
-
+sql_prompt = """You are an expert in understanding the database schema and generating SQL queries for a natural language question asked
+pertaining to the data you have. The schema is provided in the schema tags. 
 <schema> 
-Table: product
+table: product                                                                     
 
-Columns:
-- product_link: TEXT — hyperlink to product  
-- title: TEXT — name of the product  
-- brand: TEXT — brand of the product  
-- price: INTEGER — price in Indian Rupees  
-- discount: REAL — discount (e.g., 0.1 = 10%, 0.2 = 20%)  
-- avg_rating: REAL — average product rating (0 to 5 scale)  
-- total_ratings: INTEGER — number of ratings  
+fields: 
+product_link - string (hyperlink to product)	
+title - string (name of the product)	
+brand - string (brand of the product)	
+price - integer (price of the product in Indian Rupees)	
+discount - float (discount on the product. 10 percent discount is represented as 0.1, 20 percent as 0.2, and such.)	
+avg_rating - float (average rating of the product. Range 0-5, 5 is the highest.)	
+total_ratings - integer (total number of ratings for the product)
+
 </schema>
+Make sure whenever you try to search for the brand name, the name can be in any case. 
+So, make sure to use %LIKE% to find the brand in condition. Never use "ILIKE". 
+Create a single SQL query for the question provided. 
+The query should have all the fields in SELECT clause (i.e. SELECT *)
 
-🔍 Notes:
-- Always perform **case-insensitive searches** for brand using `LOWER(brand) LIKE LOWER('%value%')`
-- Do **not** use `ILIKE`, as it's not supported in SQLite
-- The SQL query must include **all columns**: use `SELECT *`
-
-🎯 Output Instructions:
-- Return **only** the SQL query
-- Wrap the query in `<SQL>` and `</SQL>` tags
-"""
+Just the SQL query is needed, nothing more. Always provide the SQL in between the <SQL></SQL> tags."""
 
 # ✍️ 4. Prompt for Natural Language Summarization
 comprehension_prompt = """You are an expert in understanding the context of the question and replying based on the data pertaining to the question provided. You will be provided with Question: and Data:. The data will be in the form of an array or a dataframe or dict. Reply based on only the data provided as Data for answering the question asked as Question. Do not write anything like 'Based on the data' or any other technical words. Just a plain simple natural language response.
