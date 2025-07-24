@@ -36,7 +36,8 @@ total_ratings - integer (total number of ratings for the product)
 
 </schema>
 Make sure whenever you try to search for the brand name, the name can be in any case. 
-So, make sure to use %LIKE% to find the brand in condition.
+So, make sure to use %LIKE% to find the brand in condition. 
+Never use "ILIKE" as it is not supported in SQLite. 
 Create a single SQL query for the question provided. 
 The query should have all the fields in SELECT clause (i.e. SELECT *)
 
